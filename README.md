@@ -50,3 +50,9 @@ Now type **python database_setup.py** to initialize the database.
 Type **python lotsofmenus.py** to populate the database with restaurants and menu items. (Optional)
 
 Type **python project.py** to run the Flask web server. In your browser visit **http://localhost:5000** to view the restaurant menu app.  You should be able to view, add, edit, and delete menu items and restaurants.
+
+# JSON API ENDPOINTS
+The following serialized JSON endpoints for this project are available:
+** All restaurants ** /restaurant/JSON
+** Specific restaurant info ** /restaurant/<int:restaurant_id>/menu/JSON
+** Specific restaurant menu info ** /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON
