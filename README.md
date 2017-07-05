@@ -1,12 +1,11 @@
-# OAuth2.0
-Starter Code for Auth&amp;Auth course
-# Installing the Vagrant VM for ud330 - Authentication & Authorization
 
-**Note: If you already have a vagrant machine installed from previous Udacity courses skip to the 'Fetch the Source Code and VM Configuration' section**
 
-In Lessons 2,3 and 4 of this course, you'll use a virtual machine (VM) to run a web server and a web app that uses it. The VM is a Linux system that runs on top of your own machine.  You can share files easily between your computer and the VM.
+The following instructions are referenced from, and a part of, Udacity's Full Stack Web Developer Nanodegree Program.
+Lesson 3. The Backend: Databases and Applications.
+For details on the program and its courses, visit Udacity's FSND site at:
+[Udacity Fullstack Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004)
 
-We're using the Vagrant software to configure and manage the VM. Here are the tools you'll need to install to get it running:
+# To run this project on your local system, the requirements are:
 
 ### Git
 
@@ -29,20 +28,13 @@ Vagrant is the software that configures the VM and lets you share files between 
 
 **Windows Note:** The Installer may ask you to grant network permissions to Vagrant or make a firewall exception. Be sure to allow this.
 
-## Fetch the Source Code and VM Configuration
+## Fork/clone this project, or download the zipped files
 
-**Windows:** Use the Git Bash program (installed with Git) to get a Unix-style terminal.  
-**Other systems:** Use your favorite terminal program.
-
-From the terminal, run:
-
-    git clone https://github.com/udacity/OAuth2.0 oauth
-
-This will give you a directory named **oauth** complete with the source code for the flask application, a vagrantfile, and a bootstrap.sh file for installing all of the necessary tools. 
+Open your copy of the github repo locally, or unzip the files and open a Git terminal in the folder's location.
 
 ## Run the virtual machine!
 
-Using the terminal, change directory to oauth (**cd oauth**), then type **vagrant up** to launch your virtual machine.
+Using the terminal, change directory to the folder (**cd folderpath**), then type **vagrant up** to launch your virtual machine.
 
 
 ## Running the Restaurant Menu App
