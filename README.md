@@ -55,5 +55,7 @@ Type **python project.py** to run the Flask web server. In your browser visit **
 The following serialized JSON endpoints for this project are available:
 
 **All restaurants** /restaurant/JSON
+
 **Specific restaurant info** /restaurant/<int:restaurant_id>/menu/JSON
+
 **Specific restaurant menu info** /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON
