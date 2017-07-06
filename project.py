@@ -16,6 +16,9 @@ import json
 from flask import make_response
 import requests
 
+from functools import wraps
+
+
 app = Flask(__name__)
 
 CLIENT_ID = json.loads(
@@ -132,8 +135,6 @@ def gconnect():
     return output
 
 # User Helper Functions
-
-
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
@@ -154,6 +155,7 @@ def getUserID(email):
         return user.id
     except:
         return None
+
 
     
 # DISCONNECT - Revoke a current user's token and reset their login_session
@@ -190,7 +192,13 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     
-
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in login_session:
+            return redirect(url_for('showLogin'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # JSON APIs to view Restaurant Information
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
@@ -226,9 +234,8 @@ def showRestaurants():
 
 # Create a new restaurant
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
+@login_required
 def newRestaurant():
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         newRestaurant = Restaurant(
             name=request.form['name'], user_id=login_session['user_id'])
@@ -241,9 +248,8 @@ def newRestaurant():
 
 # Edit a restaurant
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
+@login_required
 def editRestaurant(restaurant_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     editedRestaurant = session.query(
         Restaurant).filter_by(id=restaurant_id).one()
     if 'username' in login_session and editedRestaurant.user_id != login_session['user_id']:
@@ -260,11 +266,10 @@ def editRestaurant(restaurant_id):
 
 # Delete a restaurant
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
+@login_required
 def deleteRestaurant(restaurant_id):
     restaurantToDelete = session.query(
         Restaurant).filter_by(id=restaurant_id).one()
-    if 'username' not in login_session:
-        return redirect('/login')
     if 'username' in login_session and restaurantToDelete.user_id != login_session['user_id']:
         flash('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.')
         return redirect(url_for('showRestaurants', restaurant_id=restaurant_id))
@@ -293,9 +298,8 @@ def showMenu(restaurant_id):
 
 # Create a new menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
+@login_required
 def newMenuItem(restaurant_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if 'username' in login_session and restaurant.user_id != login_session['user_id']:
         flash('You are not authorized to edit this restaurant. Please create your own restaurant in order to edit.')
@@ -312,9 +316,8 @@ def newMenuItem(restaurant_id):
 
 # Edit a menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editMenuItem(restaurant_id, menu_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     if request.method == 'POST':
@@ -336,9 +339,8 @@ def editMenuItem(restaurant_id, menu_id):
 
 # Delete a menu item
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods=['GET', 'POST'])
+@login_required
 def deleteMenuItem(restaurant_id, menu_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     itemToDelete = session.query(MenuItem).filter_by(id=menu_id).one()
     if request.method == 'POST':
